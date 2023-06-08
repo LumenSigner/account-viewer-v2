@@ -41,6 +41,7 @@ export enum AuthType {
   FREIGHTER = "FREIGHTER",
   PRIVATE_KEY = "PRIVATE_KEY",
   TREZOR = "TREZOR",
+  LUMENSIGNER = "LUMENSIGNER",
 }
 
 export interface ModalPageProps {
@@ -54,6 +55,7 @@ export enum ModalType {
   SIGNIN_FREIGHTER = "SIGNIN_FREIGHTER",
   SIGNIN_ALBEDO = "SIGNIN_ALBEDO",
   NEW_KEY_PAIR = "NEW_KEY_PAIR",
+  SIGNIN_LUMENSIGNER = "SIGNIN_LUMENSIGNER",
 }
 
 // Store

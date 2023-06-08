@@ -35,4 +35,12 @@ export const wallets: Wallets = {
     infoLinkText: "Learn more",
     infoLink: "https://trezor.io",
   },
+  lumensigner: {
+    title: "Connect with LumenSigner",
+    logoSvg: <Logo.Trezor />,
+    modalType: ModalType.SIGNIN_LUMENSIGNER,
+    infoText: "LumenSigner is an open-source hardware wallet for Stellar.",
+    infoLinkText: "Learn more",
+    infoLink: "https://github.com/LumenSigner/lumensigner",
+  },
 };
