@@ -113,7 +113,7 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
 
     if (
       command !== "address" ||
-      `/${lumenSignerBipPath}` !== bipPath ||
+      `m/${lumenSignerBipPath}` !== bipPath ||
       !isValidPublicKey
     ) {
       setErrorMessage("Invalid QR code");
