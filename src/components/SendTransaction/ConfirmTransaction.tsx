@@ -44,6 +44,8 @@ export const ConfirmTransaction = ({
   const [transactionPart, setTransactionPart] = useState("");
   const [inReadSignatureProcess, setInReadSignatureProcess] = useState(false);
 
+  const [lumenSignerTxData, setLumenSignerTxData] = useState<string[]>([]);
+
   const { account } = useRedux("account");
   const { data } = account;
   const accountId = data?.id;
@@ -71,51 +73,41 @@ export const ConfirmTransaction = ({
   }, [status, onSuccessfulTx, onFailedTx, errorString]);
 
   useEffect(() => {
-    const path = `m/${lumensigner.bipPath}`;
-    const networkPassphrase: string = settings.isTestnet
-      ? Networks.TESTNET
-      : Networks.PUBLIC;
-
-    const transactionXdr = formData.tx?.toXDR().toString();
-    const dataPieceLength = 80;
-    const txData = `${path};${transactionXdr};${networkPassphrase}`;
-    const dataPieces = Array.from(
-      { length: Math.ceil(txData.length / dataPieceLength) },
-      (_, i) => txData.slice(i * dataPieceLength, (i + 1) * dataPieceLength),
-    );
-    const totalPieces = dataPieces.length;
-
     const intervalId = setInterval(() => {
+      const totalPieces = lumenSignerTxData.length;
       setCurrentIndex((prevIndex: number) => (prevIndex + 1) % totalPieces);
-    }, 2000);
+    }, 1000);
     return () => clearInterval(intervalId);
-  }, [formData.tx, lumensigner.bipPath, settings.isTestnet]);
+  }, [lumenSignerTxData]);
 
   useEffect(() => {
-    const path = `m/${lumensigner.bipPath}`;
-    const networkPassphrase: string = settings.isTestnet
-      ? Networks.TESTNET
-      : Networks.PUBLIC;
-
     const command = "sign-transaction";
-    const transactionXdr = formData.tx?.toXDR().toString();
-    const dataPieceLength = 80;
-    const txData = `${path};${transactionXdr};${networkPassphrase}`;
-    const dataPieces = Array.from(
-      { length: Math.ceil(txData.length / dataPieceLength) },
-      (_, i) => txData.slice(i * dataPieceLength, (i + 1) * dataPieceLength),
-    );
-    const totalPieces = dataPieces.length;
+    const totalPieces = lumenSignerTxData.length;
     setTransactionPart(
       `p${currentIndex + 1}of${totalPieces};${command};${
-        dataPieces[currentIndex]
+        lumenSignerTxData[currentIndex]
       }`,
     );
-  }, [formData.tx, lumensigner.bipPath, settings.isTestnet, currentIndex]);
+  }, [currentIndex, lumenSignerTxData]);
 
   const handleSend = (type: AuthType | undefined) => {
     if (type === AuthType.LUMENSIGNER) {
       dispatch(updateSendTxStatus(ActionStatus.PENDING));
+      const path = `m/${lumensigner.bipPath}`;
+      const networkPassphrase: string = settings.isTestnet
+        ? Networks.TESTNET
+        : Networks.PUBLIC;
+
+      const transactionXdr = formData.tx?.toXDR().toString();
+      const dataPieceLength = 80;
+      const txData = `${path};${transactionXdr};${networkPassphrase}`;
+      const dataPieces = Array.from(
+        { length: Math.ceil(txData.length / dataPieceLength) },
+        (_, i) => txData.slice(i * dataPieceLength, (i + 1) * dataPieceLength),
+      );
+      console.log("setLumenSignerTxData");
+      console.log(dataPieces);
+      setLumenSignerTxData((_) => [...dataPieces]);
     } else {
       dispatch(sendTxAction(formData.tx));
     }
@@ -174,7 +166,10 @@ export const ConfirmTransaction = ({
             <Modal.Heading>Confirm transaction</Modal.Heading>
 
             <InfoBlock>
-              <p>Please use your LumenSigner to scan the QR code below.</p>
+              <p>
+                Please use your LumenSigner to scan the QR code below until it
+                enters the signing page.
+              </p>
             </InfoBlock>
 
             <Modal.Body>
