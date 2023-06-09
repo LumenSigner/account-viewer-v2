@@ -73,6 +73,7 @@ export const ConfirmTransaction = ({
   }, [status, onSuccessfulTx, onFailedTx, errorString]);
 
   useEffect(() => {
+    console.log("lumenSignerTxData: ", lumenSignerTxData);
     const intervalId = setInterval(() => {
       const totalPieces = lumenSignerTxData.length;
       setCurrentIndex((prevIndex: number) => (prevIndex + 1) % totalPieces);
