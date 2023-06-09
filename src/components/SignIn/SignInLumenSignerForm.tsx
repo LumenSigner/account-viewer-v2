@@ -32,7 +32,6 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
 
   const [showRequestAddressView, setShowRequestAddressView] = useState(false);
   const [showReceiveAddressView, setShowReceiveAddressView] = useState(false);
-
   const [lumenSignerBipPath, setLumenSignerBipPath] = useState(
     defaultStellarBipPath,
   );
@@ -66,15 +65,15 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
       }
     }
   }, [
-    status,
-    isAuthenticated,
-    setErrorMessage,
-    dispatch,
     accountId,
+    dispatch,
     errorString,
-    navigate,
+    isAuthenticated,
     location.search,
     lumenSignerBipPath,
+    navigate,
+    setErrorMessage,
+    status,
   ]);
 
   const goToRequestAddressView = () => {
@@ -84,6 +83,17 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
   const goToReceiveAddressView = () => {
     setShowRequestAddressView(false);
     setShowReceiveAddressView(true);
+  };
+
+  const handleQrError = (error: Error) => {
+    if (!error) {
+      return;
+    }
+    if (error.message === "Permission denied") {
+      setErrorMessage(
+        "Please check if you have allowed the use of the camera.",
+      );
+    }
   };
 
   const handleSignIn = (result: Result) => {
@@ -190,9 +200,12 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
 
           <Modal.Body>
             <QrReader
-              onResult={(result) => {
+              onResult={(result, error) => {
                 if (result) {
                   handleSignIn(result);
+                }
+                if (error) {
+                  handleQrError(error);
                 }
               }}
               containerStyle={{
