@@ -17,10 +17,9 @@ import { logEvent } from "helpers/tracking";
 import { resetAccountAction, fetchAccountAction } from "ducks/account";
 import { useErrorMessage } from "hooks/useErrorMessage";
 import { Keypair } from "stellar-sdk";
-import { storeKeyAction } from "ducks/keyStore";
 import { updateSettingsAction } from "ducks/settings";
-import { KeyType } from "@stellar/wallet-sdk";
 import { ErrorMessage } from "components/ErrorMessage";
+import { updateLumenSignerAction } from "ducks/lumensigner";
 
 export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
   const dispatch = useDispatch();
@@ -54,10 +53,8 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
         });
         dispatch(updateSettingsAction({ authType: AuthType.LUMENSIGNER }));
         dispatch(
-          storeKeyAction({
-            publicKey: accountId,
-            keyType: KeyType.ledger, // TODO: add lumensigner key type
-            path: lumenSignerBipPath,
+          updateLumenSignerAction({
+            bipPath: lumenSignerBipPath,
           }),
         );
         logEvent("login: connected with LumenSigner");

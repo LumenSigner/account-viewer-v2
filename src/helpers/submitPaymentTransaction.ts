@@ -28,6 +28,8 @@ export const submitPaymentTransaction = async (transaction: Transaction) => {
       signedTransaction = await signLedgerTransaction(transaction, keyStore);
     } else if (settings.authType === AuthType.TREZOR) {
       signedTransaction = await signTrezorTransaction(transaction, keyStore);
+    } else if (settings.authType === AuthType.LUMENSIGNER) {
+      signedTransaction = transaction;
     } else {
       signedTransaction = await signTransaction({
         id: keyStore.keyStoreId,
@@ -36,7 +38,6 @@ export const submitPaymentTransaction = async (transaction: Transaction) => {
         custom: keyStore.custom,
       });
     }
-
     return await server.submitTransaction(signedTransaction);
   } catch (error) {
     throw new Error(
