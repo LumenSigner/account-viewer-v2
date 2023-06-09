@@ -82,13 +82,15 @@ export const ConfirmTransaction = ({
   }, [lumenSignerTxData]);
 
   useEffect(() => {
-    const command = "sign-transaction";
-    const totalPieces = lumenSignerTxData.length;
-    setTransactionPart(
-      `p${currentIndex + 1}of${totalPieces};${command};${
-        lumenSignerTxData[currentIndex]
-      }`,
-    );
+    if (lumenSignerTxData.length > 0) {
+      const command = "sign-transaction";
+      const totalPieces = lumenSignerTxData.length;
+      setTransactionPart(
+        `p${currentIndex + 1}of${totalPieces};${command};${
+          lumenSignerTxData[currentIndex]
+        }`,
+      );
+    }
   }, [currentIndex, lumenSignerTxData]);
 
   const handleSend = (type: AuthType | undefined) => {
