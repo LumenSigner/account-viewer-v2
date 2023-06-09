@@ -109,26 +109,6 @@ export const Landing = () => {
           })}
         </div>
 
-        <div className="Landing-buttons-wrapper">
-          <TextLink
-            role="button"
-            onClick={() => openModal(ModalType.SIGNIN_SECRET_KEY)}
-            variant={TextLink.variant.secondary}
-            underline
-          >
-            Connect with a secret key
-          </TextLink>
-
-          <TextLink
-            role="button"
-            onClick={() => openModal(ModalType.NEW_KEY_PAIR)}
-            variant={TextLink.variant.secondary}
-            underline
-          >
-            Generate key pair for a new account
-          </TextLink>
-        </div>
-
         <Modal visible={activeModal !== null} onClose={closeModal}>
           {renderModalContent()}
         </Modal>
