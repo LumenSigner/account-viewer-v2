@@ -105,8 +105,6 @@ export const ConfirmTransaction = ({
         { length: Math.ceil(txData.length / dataPieceLength) },
         (_, i) => txData.slice(i * dataPieceLength, (i + 1) * dataPieceLength),
       );
-      console.log("setLumenSignerTxData");
-      console.log(dataPieces);
       setLumenSignerTxData((_) => [...dataPieces]);
     } else {
       dispatch(sendTxAction(formData.tx));
