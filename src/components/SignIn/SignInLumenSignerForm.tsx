@@ -31,6 +31,7 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
   const accountId = data?.id;
 
   const [showRequestAddressView, setShowRequestAddressView] = useState(false);
+  const [scanSuccessful, setScanSuccessful] = useState(false);
   const [showReceiveAddressView, setShowReceiveAddressView] = useState(false);
   const [lumenSignerBipPath, setLumenSignerBipPath] = useState(
     defaultStellarBipPath,
@@ -129,6 +130,7 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
       });
       return;
     }
+    setScanSuccessful(true);
     dispatch(fetchAccountAction(publicKey));
   };
 
@@ -187,7 +189,7 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
         </>
       )}
 
-      {showReceiveAddressView && (
+      {showReceiveAddressView && !scanSuccessful && (
         <>
           <Modal.Heading>Connect with LumenSigner</Modal.Heading>
 
@@ -218,6 +220,19 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
             />
             <ErrorMessage message={errorMessage} textAlign="center" />
           </Modal.Body>
+        </>
+      )}
+
+      {showReceiveAddressView && scanSuccessful && (
+        <>
+          <Modal.Heading>Connect with LumenSigner</Modal.Heading>
+
+          <InfoBlock>
+            <p>
+              You have successfully connected with LumenSigner. Loading
+              account...
+            </p>
+          </InfoBlock>
         </>
       )}
     </>
