@@ -39,7 +39,7 @@ export const ConfirmTransaction = ({
   onBack,
 }: ConfirmTransactionProps) => {
   const { sendTx, settings } = useRedux("sendTx", "keyStore", "settings");
-  const { lumensigner } = useRedux("lumensigner");
+  const { lumenSignerSettings } = useRedux("lumenSignerSettings");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transactionPart, setTransactionPart] = useState("");
   const [inReadSignatureProcess, setInReadSignatureProcess] = useState(false);
@@ -93,7 +93,7 @@ export const ConfirmTransaction = ({
   const handleSend = (type: AuthType | undefined) => {
     if (type === AuthType.LUMENSIGNER) {
       dispatch(updateSendTxStatus(ActionStatus.PENDING));
-      const path = `m/${lumensigner.bipPath}`;
+      const path = `m/${lumenSignerSettings.bipPath}`;
       const networkPassphrase: string = settings.isTestnet
         ? Networks.TESTNET
         : Networks.PUBLIC;

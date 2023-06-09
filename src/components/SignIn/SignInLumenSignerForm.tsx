@@ -19,7 +19,7 @@ import { useErrorMessage } from "hooks/useErrorMessage";
 import { Keypair } from "stellar-sdk";
 import { updateSettingsAction } from "ducks/settings";
 import { ErrorMessage } from "components/ErrorMessage";
-import { updateLumenSignerAction } from "ducks/lumensigner";
+import { updateLumenSignerSettingsAction } from "ducks/lumenSignerSettings";
 
 export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ export const SignInLumenSignerForm = ({ onClose }: ModalPageProps) => {
         });
         dispatch(updateSettingsAction({ authType: AuthType.LUMENSIGNER }));
         dispatch(
-          updateLumenSignerAction({
+          updateLumenSignerSettingsAction({
             bipPath: lumenSignerBipPath,
           }),
         );

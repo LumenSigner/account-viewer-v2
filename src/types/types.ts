@@ -130,11 +130,11 @@ export interface Setting {
   [key: string]: any;
 }
 
-export interface LumenSignerInitialState {
+export interface LumenSignerSettingsInitialState {
   bipPath: string | undefined;
 }
 
-export interface LumenSigner {
+export interface LumenSignerSettings {
   [key: string]: any;
 }
 
@@ -161,7 +161,7 @@ export interface Store {
   memoRequiredAccounts: MemoRequiredAccountsInitialState;
   sendTx: SendTxInitialState;
   settings: SettingsInitialState;
-  lumensigner: LumenSignerInitialState;
+  lumenSignerSettings: LumenSignerSettingsInitialState;
   txHistory: TxHistoryInitialState;
   walletAlbedo: WalletInitialState;
   walletLedger: WalletInitialState;
