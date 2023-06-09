@@ -8,6 +8,7 @@ import { SignInLedgerForm } from "components/SignIn/SignInLedgerForm";
 import { SignInFreighterForm } from "components/SignIn/SignInFreighterForm";
 import { SignInSecretKeyForm } from "components/SignIn/SignInSecretKeyForm";
 import { SignInTrezorForm } from "components/SignIn/SignInTrezorForm";
+import { SignInLumenSignerForm } from "components/SignIn/SignInLumenSignerForm";
 import { WalletButton } from "components/WalletButton";
 
 import { wallets } from "constants/wallets";
@@ -68,6 +69,8 @@ export const Landing = () => {
         return <SignInAlbedoForm onClose={closeModal} />;
       case ModalType.NEW_KEY_PAIR:
         return <NewKeyPairForm onClose={closeModal} />;
+      case ModalType.SIGNIN_LUMENSIGNER:
+        return <SignInLumenSignerForm onClose={closeModal} />;
       default:
         return null;
     }

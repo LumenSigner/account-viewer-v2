@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MemoType, MemoValue, Horizon, Transaction } from "stellar-sdk";
 import { getErrorString } from "helpers/getErrorString";
 import { submitPaymentTransaction } from "helpers/submitPaymentTransaction";
@@ -43,6 +43,11 @@ const sendTxSlice = createSlice({
   initialState,
   reducers: {
     resetSendTxAction: () => initialState,
+    // update status
+    updateSendTxStatus: (state, action: PayloadAction<ActionStatus>) => ({
+      ...state,
+      status: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(sendTxAction.pending, (state) => {
@@ -62,3 +67,4 @@ const sendTxSlice = createSlice({
 
 export const { reducer } = sendTxSlice;
 export const { resetSendTxAction } = sendTxSlice.actions;
+export const { updateSendTxStatus } = sendTxSlice.actions;

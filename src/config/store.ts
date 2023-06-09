@@ -18,6 +18,7 @@ import { reducer as liquidityPoolTx } from "ducks/liquidityPoolTx";
 import { reducer as memoRequiredAccounts } from "ducks/memoRequiredAccounts";
 import { reducer as sendTx } from "ducks/sendTx";
 import { reducer as settings } from "ducks/settings";
+import { reducer as lumenSignerSettings } from "ducks/lumenSignerSettings";
 import { reducer as txHistory } from "ducks/txHistory";
 import { reducer as walletAlbedo } from "ducks/wallet/albedo";
 import { reducer as walletLedger } from "ducks/wallet/ledger";
@@ -46,6 +47,7 @@ const reducers = combineReducers({
   memoRequiredAccounts,
   sendTx,
   settings,
+  lumenSignerSettings,
   txHistory,
   walletAlbedo,
   walletLedger,

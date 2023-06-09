@@ -41,6 +41,7 @@ export enum AuthType {
   FREIGHTER = "FREIGHTER",
   PRIVATE_KEY = "PRIVATE_KEY",
   TREZOR = "TREZOR",
+  LUMENSIGNER = "LUMENSIGNER",
 }
 
 export interface ModalPageProps {
@@ -54,6 +55,7 @@ export enum ModalType {
   SIGNIN_FREIGHTER = "SIGNIN_FREIGHTER",
   SIGNIN_ALBEDO = "SIGNIN_ALBEDO",
   NEW_KEY_PAIR = "NEW_KEY_PAIR",
+  SIGNIN_LUMENSIGNER = "SIGNIN_LUMENSIGNER",
 }
 
 // Store
@@ -128,6 +130,14 @@ export interface Setting {
   [key: string]: any;
 }
 
+export interface LumenSignerSettingsInitialState {
+  bipPath: string | undefined;
+}
+
+export interface LumenSignerSettings {
+  [key: string]: any;
+}
+
 export interface TxHistoryInitialState {
   data: Types.Payment[];
   hasMoreTxs?: boolean;
@@ -151,6 +161,7 @@ export interface Store {
   memoRequiredAccounts: MemoRequiredAccountsInitialState;
   sendTx: SendTxInitialState;
   settings: SettingsInitialState;
+  lumenSignerSettings: LumenSignerSettingsInitialState;
   txHistory: TxHistoryInitialState;
   walletAlbedo: WalletInitialState;
   walletLedger: WalletInitialState;
