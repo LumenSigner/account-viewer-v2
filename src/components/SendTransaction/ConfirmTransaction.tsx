@@ -43,6 +43,7 @@ export const ConfirmTransaction = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transactionPart, setTransactionPart] = useState("");
   const [inReadSignatureProcess, setInReadSignatureProcess] = useState(false);
+  const [scanSuccessful, setScanSuccessful] = useState(false);
 
   const [lumenSignerTxData, setLumenSignerTxData] = useState<string[]>([]);
 
@@ -73,16 +74,22 @@ export const ConfirmTransaction = ({
   }, [status, onSuccessfulTx, onFailedTx, errorString]);
 
   useEffect(() => {
+    // Forgive me for not being familiar with front-end development,
+    // but could this be a bug?
     console.log("lumenSignerTxData: ", lumenSignerTxData);
-    const intervalId = setInterval(() => {
-      const totalPieces = lumenSignerTxData.length;
-      setCurrentIndex((prevIndex: number) => (prevIndex + 1) % totalPieces);
-    }, 1000);
+    let intervalId: any = null;
+    if (lumenSignerTxData.length > 0) {
+      intervalId = setInterval(() => {
+        const totalPieces = lumenSignerTxData.length;
+
+        setCurrentIndex((prevIndex: number) => (prevIndex + 1) % totalPieces);
+      }, 1000);
+    }
     return () => clearInterval(intervalId);
   }, [lumenSignerTxData]);
 
   useEffect(() => {
-    if (lumenSignerTxData.length > 0) {
+    if (lumenSignerTxData.length > 0 && !Number.isNaN(currentIndex)) {
       const command = "sign-transaction";
       const totalPieces = lumenSignerTxData.length;
       setTransactionPart(
@@ -138,7 +145,7 @@ export const ConfirmTransaction = ({
     }
     const qrDataArr = qrData.split(";");
     const signature = qrDataArr[1];
-
+    setScanSuccessful(true);
     transaction.addSignature(accountId, signature);
     dispatch(sendTxAction(transaction));
   };
@@ -202,29 +209,38 @@ export const ConfirmTransaction = ({
           <>
             <Modal.Heading>Confirm transaction</Modal.Heading>
 
-            <InfoBlock>
-              <p>
-                After you authorize on LumenSigner, a QR code will appear on the
-                screen of LumenSigner. Please hold it up to your device's
-                camera.
-              </p>
-            </InfoBlock>
+            {!scanSuccessful && (
+              <InfoBlock>
+                <p>
+                  After you authorize on LumenSigner, a QR code will appear on
+                  the screen of LumenSigner. Please hold it up to your device's
+                  camera.
+                </p>
+              </InfoBlock>
+            )}
+            {scanSuccessful && (
+              <InfoBlock>
+                <p>Submitting...</p>
+              </InfoBlock>
+            )}
 
             <Modal.Body>
-              <QrReader
-                onResult={(result) => {
-                  if (result) {
-                    handleLumenSignerSubmitTx(result);
-                  }
-                }}
-                containerStyle={{
-                  height: "auto",
-                  margin: "0 auto",
-                  maxWidth: 256,
-                  width: "100%",
-                }}
-                constraints={{ facingMode: "user" }}
-              />
+              {!!transactionPart && !scanSuccessful && (
+                <QrReader
+                  onResult={(result) => {
+                    if (result) {
+                      handleLumenSignerSubmitTx(result);
+                    }
+                  }}
+                  containerStyle={{
+                    height: "auto",
+                    margin: "0 auto",
+                    maxWidth: 256,
+                    width: "100%",
+                  }}
+                  constraints={{ facingMode: "user" }}
+                />
+              )}
             </Modal.Body>
           </>
         )}
